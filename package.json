@@ -1,0 +1,16 @@
+{
+  "name": "aws-ws-chat-arc",
+  "version": "1.0.0",
+  "description": "Ws on AWS Lambda sample",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Pello Xabier Altadill Izura",
+  "repository": "https://github.com/pxai/aws-ws-chat-arc",
+  "dependencies": {
+    "@architect/architect": "^8.3.7",
+    "@architect/functions": "^3.13.8"
+  }
+}
