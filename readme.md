@@ -1,14 +1,20 @@
-# Arc Websockets Example
+# AWS Basic WebSockets using ARC
 
 An `echo` server using web sockets for Architect 8.x.
 
-## Local demo
+## Running locally
 
-```bash
-npm i
+Install stuff:
+```shell
+npm install
+```
+
+Then:
+
+```shell
 arc sandbox
 ```
 
-## Deploying to Lambda
-
-If you want to deploy to Lambda you may need to add an `@aws` entry (https://arc.codes/reference/arc/aws) in your `.arc` file. Also be sure to update `src/http/get-index/get-web-socket-url.js` after your first deploy with real urls.
+## Deployment
+ add an `@aws` entry (https://arc.codes/reference/arc/aws) in your `.arc` file.
+ Also be sure to update `src/http/get-index/get-web-socket-url.js` after your first deploy with real urls.
