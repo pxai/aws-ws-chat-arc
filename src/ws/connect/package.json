@@ -1,5 +1,5 @@
 {
-  "name": "test-ws-ws-connect",
+  "name": "aws-ws-chat-arc-connect",
   "dependencies": {
     "@architect/functions": "^3.7.6"
   }

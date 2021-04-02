@@ -1,5 +1,5 @@
 {
-  "name": "test-ws-ws-disconnect",
+  "name": "aws-ws-chat-arc-disconnect",
   "dependencies": {
     "@architect/functions": "^3.7.6"
   }
