@@ -1,5 +1,5 @@
 @app
-test-ws
+aws-ws-chat-arc
 
 @ws
 # no further config required
