@@ -1,7 +1,6 @@
 
 const url = window.WS_URL;
 
-
 const main = document.getElementsByTagName('main')[0];
 const msg = document.getElementById('message');
 let peers = [];
@@ -16,7 +15,7 @@ ws.onerror = console.log;
 
 function open(who) {
   const ts = new Date(Date.now()).toISOString();
-  if (!peers.include(who)) peers.push(who);
+  // if (!peers.include(who)) peers.push(who);
   main.innerHTML = `<p><b><code>${ts} - opened</code></b></p>`;
 }
 
@@ -26,8 +25,9 @@ function close(who) {
 }
 
 function message(e) {
-  const { msg, who } = JSON.parse(e.data);
-  main.innerHTML += `<p><b>${who}</b><code>${msg.text}</code></p>`;
+  const msg = JSON.parse(e.data);
+  const {timestamp, text, who} = msg.message;
+  main.innerHTML += `<p><b>${who}&gt;</b> <code>${text}</code></p>`;
 }
 
 msg.addEventListener('keyup', function(e) {

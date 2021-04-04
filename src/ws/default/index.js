@@ -6,13 +6,14 @@ exports.handler = async function ws(event) {
 
   const timestamp = new Date().toISOString();
   const connectionId = event.requestContext.connectionId;
-  const message = JSON.parse(event.body);
-  const text = `${timestamp} - Echoing ${message.text}`;
+  const {text, peers} = JSON.parse(event.body);
+  const message = { timestamp, text, who: connectionId };
 
   await arc.ws.send({
     id: connectionId,
-    payload: {text}
+    payload: {message}
   });
+  console.log("Server, sent> ", message);
 
   return {statusCode: 200};
 }
