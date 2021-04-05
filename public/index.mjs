@@ -5,6 +5,7 @@ const main = document.getElementsByTagName('main')[0];
 const login = document.getElementById('login');
 const url = document.getElementById('url');
 const msg = document.getElementById('message');
+const create = document.getElementById('create');
 let peers = [];
 
 let ws;
@@ -49,4 +50,8 @@ url.addEventListener('keyup', function(e) {
     e.target.value = '';
     openWebsocket(url);
   }
+})
+
+create.addEventListener('click', function(e) {
+    openWebsocket();
 })
