@@ -1,17 +1,22 @@
 
-const url = window.WS_URL;
+const defaultUrl = window.WS_URL;
 
 const main = document.getElementsByTagName('main')[0];
+const login = document.getElementById('login');
+const url = document.getElementById('url');
 const msg = document.getElementById('message');
 let peers = [];
 
-const ws = new WebSocket(url);
+let ws;
 
-ws.onopen = open;
-ws.onclose = close;
-ws.onmessage = message;
-ws.onerror = console.log;
-
+function openWebsocket (url=defaultUrl) {
+  ws = new WebSocket(url);
+  console.log("Opening: ", url);
+  ws.onopen = open;
+  ws.onclose = close;
+  ws.onmessage = message;
+  ws.onerror = console.log;
+}
 
 function open(who) {
   const ts = new Date(Date.now()).toISOString();
@@ -35,5 +40,13 @@ msg.addEventListener('keyup', function(e) {
     const text = e.target.value;
     e.target.value = '';
     ws.send(JSON.stringify({text, peers}));
+  }
+})
+
+url.addEventListener('keyup', function(e) {
+  if (e.key === 'Enter') {
+    const url = e.target.value + "/?login=" + login.value;
+    e.target.value = '';
+    openWebsocket(url);
   }
 })

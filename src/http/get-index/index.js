@@ -14,7 +14,10 @@ exports.handler = async function http(req) {
 <body>
 <h1>Web sockets echo server demo</h1>
 <main>Loading...</main>
-<input id=message type=text placeholder="Enter message" autofocus>
+<input id=login type=text placeholder="Login" autofocus><br />
+<input type=button value="Create game" onClick="openWebsocket()"><br />
+<input id=url type=text placeholder="Enter given url and press enter"><br />
+<input id=message type=text placeholder="Enter message"><br />
 <script>
 window.WS_URL = '${getURL()}'
 </script>
