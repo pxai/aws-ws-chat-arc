@@ -1,3 +1,4 @@
+const arc = require('@architect/functions');
 /**
  * notes:
  * - verify event.headers.Origin to enforce same-origin
@@ -6,10 +7,15 @@
 exports.handler = async function ws(event) {
   console.log('ws-connect called with', event);
   const connectionId = event.requestContext.connectionId;
-  if (event.queryStringParameters && Object.keys(event.queryStringParameters)) {
-    const master = Object.keys(event.queryStringParameters)[0];
-    console.log("We have MASTER: ", master);
-  }
+  console.log("new connection: ", connectionId, event.queryStringParameters, event?.queryStringParameters?.login);
+  const login = connectionId;
+  const timestamp = new Date().toISOString();
+  const message = { timestamp, text: "connect", who: { connectionId, login } };
+  const channel = connectionId;
+  await arc.ws.send({
+    id: channel,
+    payload: {message}
+  });
 
-  return {statusCode: 200, connectionId};
+  return {statusCode: 200, connectionId, msg: "YEAH"};
 }

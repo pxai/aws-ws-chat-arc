@@ -6,8 +6,8 @@ exports.handler = async function ws(event) {
 
   const timestamp = new Date().toISOString();
   const connectionId = event.requestContext.connectionId;
-  const {text, peers} = JSON.parse(event.body);
-  const message = { timestamp, text, who: connectionId };
+  const msg = JSON.parse(event.body);
+  const message = { timestamp, text: msg.message, who: connectionId };
 
   await arc.ws.send({
     id: connectionId,
