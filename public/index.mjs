@@ -61,6 +61,7 @@ msg.addEventListener('keyup', function(e) {
 
 url.addEventListener('keyup', function(e) {
   if (e.key === 'Enter') {
+    url.style.display = 'none';
     const url = e.target.value + "/?login=" + login.value;
     e.target.value = '';
     openWebsocket(url);
@@ -68,6 +69,8 @@ url.addEventListener('keyup', function(e) {
 })
 
 create.addEventListener('click', function(e) {
+  create.style.display = 'none';
+  url.style.display = 'none';
   console.log("Creating new ws");
     openWebsocket();
 })

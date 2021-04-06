@@ -12,7 +12,7 @@ npm install
 Then:
 
 ```shell
-arc sandbox
+npx arc sandbox
 ```
 
 ## Deployment
