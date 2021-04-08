@@ -39,9 +39,9 @@ function message(event) {
   const msg = JSON.parse(event.data);
   const {timestamp, text, who, login} = msg.message;
 
-  //if (text == "giveChannel") {
+  if (text == "giveChannel") {
     main.innerHTML += `<p><b><code>${timestamp}:${text}- opened channel: ${location.href}/?${who}</code></b></p>`;
-  //}
+  }
 
   /*if (text === "connect") {
     console.log("New connected: ", who);
