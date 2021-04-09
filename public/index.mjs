@@ -37,16 +37,16 @@ function close(e) {
 function message(event) {
   console.log("MESSAGE: ", event);
   const msg = JSON.parse(event.data);
-  const {timestamp, text, who, login} = msg.message;
+  const {timestamp, text, who} = msg.message;
 
   if (text == "giveChannel") {
-    main.innerHTML += `<p><b><code>${timestamp}:${text}- opened channel: ${location.href}/?${who}</code></b></p>`;
+    main.innerHTML += `<p><b><code>${timestamp}:${text}- announce channel: ${location.href}?${who.connectionId}</code></b></p>`;
   }
 
   /*if (text === "connect") {
     console.log("New connected: ", who);
   }*/
-  main.innerHTML += `<p><b>${login}&gt;</b> <code>${text}</code></p>`;
+  main.innerHTML += `<p><b>${who.login}&gt;</b> <code>${text}</code></p>`;
 }
 
 msg.addEventListener('keyup', function(e) {
