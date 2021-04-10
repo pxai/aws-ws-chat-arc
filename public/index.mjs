@@ -3,7 +3,7 @@ const defaultUrl = window.WS_URL;
 
 const main = document.getElementsByTagName('main')[0];
 const loginInput = document.getElementById('login');
-const url = document.getElementById('url');
+const urlInput = document.getElementById('url');
 const msg = document.getElementById('message');
 const create = document.getElementById('create');
 let peers = [];
@@ -57,10 +57,13 @@ msg.addEventListener('keyup', function(e) {
   }
 })
 
-url.addEventListener('keyup', function(e) {
+urlInput.addEventListener('keyup', function(e) {
   if (e.key === 'Enter') {
     url.style.display = 'none';
-    const url = e.target.value + "/?login=" + loginInput.value;
+    const [host, channel] = e.target.value.split("?");
+    console.log("host, channel: ", host, channel);
+    const url = `${host}/?login=${loginInput.value}&channel=${channel}`;
+    console.log("Final url: ", url);
     e.target.value = '';
     openWebsocket(url);
   }
