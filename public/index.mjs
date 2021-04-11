@@ -59,11 +59,11 @@ msg.addEventListener('keyup', function(e) {
 
 urlInput.addEventListener('keyup', function(e) {
   if (e.key === 'Enter') {
-    url.style.display = 'none';
+    urlInput.style.display = 'none';
     const [host, channel] = e.target.value.split("?");
-    console.log("host, channel: ", host, channel);
-    const url = `${host}/?login=${loginInput.value}&channel=${channel}`;
-    console.log("Final url: ", url);
+
+    const url = `${e.target.value}&login=${loginInput.value}&channel=${channel}`;
+    console.log("Final url: ", host, channel, url);
     e.target.value = '';
     openWebsocket(url);
   }
