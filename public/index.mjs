@@ -7,6 +7,7 @@ const urlInput = document.getElementById('url');
 const msg = document.getElementById('message');
 const create = document.getElementById('create');
 let peers = [];
+let isMaster = false;
 
 let ws;
 
@@ -23,8 +24,9 @@ function openWebsocket (url=defaultUrl) {
 
 function open(event) {
   const timestamp = new Date().toISOString();
-  const channel = url.value.split("?")[1] || "";
-  const text = channel ? "givePeers" : "giveChannel";
+  const channel = urlInput.value || "";
+  const text = channel ? "giveChannel" : "givePeers";
+  console.log("OPEN> ", loginInput.value, channel, text);
   ws.send(JSON.stringify({login: loginInput.value, channel, text}));
   main.innerHTML = `<p><b><code>${timestamp} - opened channel!</code></b></p>`;
 }
@@ -73,5 +75,6 @@ create.addEventListener('click', function(e) {
   create.style.display = 'none';
   url.style.display = 'none';
   console.log("Creating new ws");
-    openWebsocket();
+  isMaster = true;
+  openWebsocket();
 })
