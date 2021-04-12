@@ -11,9 +11,9 @@ let peers = [];
 let ws;
 
 function openWebsocket (url=defaultUrl) {
-  const finalUrl = `${url}/?login=${loginInput.value}` ;
+  const finalUrl = `${url}/?login=${loginInput.value}&channel=${urlInput.value}` ;
   console.log(">Opening!!! ", finalUrl, location.href);
-  ws = new WebSocket(finalUrl);
+  ws = new WebSocket(url);
 
   ws.onopen = open;
   ws.onclose = close;
@@ -60,12 +60,12 @@ msg.addEventListener('keyup', function(e) {
 urlInput.addEventListener('keyup', function(e) {
   if (e.key === 'Enter') {
     urlInput.style.display = 'none';
-    const [host, channel] = e.target.value.split("?");
+    //const [host, channel] = e.target.value.split("?");
 
-    const url = `${e.target.value}&login=${loginInput.value}&channel=${channel}`;
-    console.log("Final url: ", host, channel, url);
+    //const url = `${e.target.value}&login=${loginInput.value}&channel=${channel}`;
+
     e.target.value = '';
-    openWebsocket(url);
+    openWebsocket();
   }
 })
 
