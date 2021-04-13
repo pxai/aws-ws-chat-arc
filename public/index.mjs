@@ -25,8 +25,8 @@ function openWebsocket (url=defaultUrl) {
 function open(event) {
   const timestamp = new Date().toISOString();
   const channel = urlInput.value || "";
-  const text = channel ? "giveChannel" : "givePeers";
-  console.log("OPEN> ", loginInput.value, channel, text);
+  const text = channel === "" ? "giveChannel" : "givePeers";
+  console.log("OPEN> Login: ", loginInput.value, " Channel: ", channel, " Message: ", text);
   ws.send(JSON.stringify({login: loginInput.value, channel, text}));
   main.innerHTML = `<p><b><code>${timestamp} - opened channel!</code></b></p>`;
 }
@@ -65,8 +65,6 @@ urlInput.addEventListener('keyup', function(e) {
     //const [host, channel] = e.target.value.split("?");
 
     //const url = `${e.target.value}&login=${loginInput.value}&channel=${channel}`;
-
-    e.target.value = '';
     openWebsocket();
   }
 })
