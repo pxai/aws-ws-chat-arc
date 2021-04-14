@@ -62,6 +62,7 @@ msg.addEventListener('keyup', function(e) {
 urlInput.addEventListener('keyup', function(e) {
   if (e.key === 'Enter') {
     urlInput.style.display = 'none';
+    create.style.display = 'none';
     //const [host, channel] = e.target.value.split("?");
 
     //const url = `${e.target.value}&login=${loginInput.value}&channel=${channel}`;
@@ -71,7 +72,7 @@ urlInput.addEventListener('keyup', function(e) {
 
 create.addEventListener('click', function(e) {
   create.style.display = 'none';
-  url.style.display = 'none';
+  urlInput.style.display = 'none';
   console.log("Creating new ws");
   isMaster = true;
   openWebsocket();
