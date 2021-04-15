@@ -6,7 +6,8 @@ const loginInput = document.getElementById('login');
 const urlInput = document.getElementById('url');
 const msg = document.getElementById('message');
 const create = document.getElementById('create');
-let peers = [];
+let peers = new Map();
+let me;
 let isMaster = false;
 
 let ws;
@@ -25,14 +26,14 @@ function openWebsocket (url=defaultUrl) {
 function open(event) {
   const timestamp = new Date().toISOString();
   const channel = urlInput.value || "";
-  const text = channel === "" ? "giveChannel" : "givePeers";
+  const text = channel === "" ? "giveChannel" : "updatePeers";
   console.log("OPEN> Login: ", loginInput.value, " Channel: ", channel, " Message: ", text);
   ws.send(JSON.stringify({login: loginInput.value, channel, text}));
   main.innerHTML = `<p><b><code>${timestamp} - opened channel!</code></b></p>`;
 }
 
 function close(e) {
-  peers = peers.filter(peer => peer !== who);
+  peers.delete(me.connectionId)
   main.innerHTML = '<a href=/>Reload</a>';
 }
 
@@ -42,12 +43,16 @@ function message(event) {
   const {timestamp, text, who} = msg.message;
 
   if (text == "giveChannel") {
+    me = who;
+    peers.set(who.connectionId, who);
     main.innerHTML += `<p><b><code>${timestamp}:${text}- announce channel: ${location.href}?${who.connectionId}</code></b></p>`;
   }
 
-  /*if (text === "connect") {
-    console.log("New connected: ", who);
-  }*/
+  if (text === "updatePeers") {
+    peers.set(who.connectionId, who);
+    console.log("New connected: ", who, peers);
+    ws.send(JSON.stringify({login: who, channel, peers: peers.entries(), text: "updateFromServer"}));
+  }
   main.innerHTML += `<p><b>${who.login}&gt;</b> <code>${text}</code></p>`;
 }
 
