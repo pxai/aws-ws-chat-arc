@@ -18,6 +18,7 @@ export default class UI extends EventEmitter {
     this.urlInput.addEventListener('keyup', this.joinChannel.bind(this));
     this.msgInput.addEventListener('keyup', this.sendMessage.bind(this));
     this.create.addEventListener('click', this.createChannel.bind(this));
+    this.websocket.on('ws-msg', this.showMessage.bind(this));
   }
 
   get login() {
@@ -52,5 +53,9 @@ export default class UI extends EventEmitter {
     this.create.style.display = 'none';
     this.urlInput.style.display = 'none';
     this.websocket.create(this.login);
+  }
+
+  showMessage({login, channel, text}) {
+    console.log("Message received: ", login, channel, text);
   }
 }

@@ -34,7 +34,9 @@ export default class Websocket extends EventEmitter {
   }
 
   onMessage(event) {
-    console.log("WS > message received: ", event);
+    console.log("WS > message received: ", event, event.data);
+    const msg = JSON.parse(event.data);
+    this.emit("ws-msg", {login: "sample", channel: "CHAN", text: msg})
   }
 
   sendMessage(login, channel, text) {
