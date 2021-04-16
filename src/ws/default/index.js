@@ -17,7 +17,7 @@ exports.handler = async function ws(event) {
     });
   }
 
-  if (text === "updateFromPeers") {
+  if (text === "updateFromServer") {
     console.log("Server sends update", channel, text, login, peers);
   }
 

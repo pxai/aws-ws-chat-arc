@@ -51,7 +51,7 @@ function message(event) {
   if (text === "updatePeers") {
     peers.set(who.connectionId, who);
     console.log("New connected: ", who, peers);
-    ws.send(JSON.stringify({login: who, channel, peers: peers.entries(), text: "updateFromServer"}));
+    ws.send(JSON.stringify({login: who, channel: urlInput.value, peers: peers.entries(), text: "updateFromServer"}));
   }
   main.innerHTML += `<p><b>${who.login}&gt;</b> <code>${text}</code></p>`;
 }
