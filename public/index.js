@@ -1,3 +1,5 @@
+import User from "./user.js";
+import Messages from "./messasges.js";
 
 const defaultUrl = window.WS_URL;
 
@@ -27,6 +29,7 @@ function open(event) {
   const timestamp = new Date().toISOString();
   const channel = urlInput.value || "";
   const text = channel === "" ? "giveChannel" : "updatePeers";
+  const user = new User(loginInput.value);
   console.log("OPEN> Login: ", loginInput.value, " Channel: ", channel, " Message: ", text);
   ws.send(JSON.stringify({login: loginInput.value, channel, text}));
   main.innerHTML = `<p><b><code>${timestamp} - opened channel!</code></b></p>`;

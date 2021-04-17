@@ -21,7 +21,7 @@ exports.handler = async function http(req) {
 <script>
 window.WS_URL = '${getURL()}'
 </script>
-<script type=module src=${static("/index.mjs")}></script>
+<script type=module src=${static("/index.js")}></script>
 </body>
 </html>`,
   };
