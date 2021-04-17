@@ -14,39 +14,9 @@ export default class UI extends EventEmitter {
   }
 
   _init() {
-    this.urlInput.addEventListener('keyup', this.openUrl.bind(this));
+    this.urlInput.addEventListener('keyup', this.joinChannel.bind(this));
     this.msgInput.addEventListener('keyup', this.sendMessage.bind(this));
     this.create.addEventListener('click', this.createChannel.bind(this));
-  }
-
-  openUrl(event) {
-    if (event.key === 'Enter') {
-      this.urlInput.style.display = 'none';
-      this.create.style.display = 'none';
-      console.log("OpenUrl: ", event.target.value);
-      //const [host, channel] = e.target.value.split("?");
-
-      //const url = `${e.target.value}&login=${loginInput.value}&channel=${channel}`;
-      // openWebsocket();
-    }
-  }
-
-  sendMessage(event) {
-    console.log("MessageSent: ", event);
-    if (event.key === 'Enter') {
-      console.log("SendMessage: ", event.target.value);
-
-      this.emit("sendMessage", {text: this.msg });
-      event.target.value = '';
-    }
-  }
-
-  createChannel(event) {
-    this.create.style.display = 'none';
-    this.urlInput.style.display = 'none';
-    console.log("Create: ");
-    // isMaster = true;
-    //openWebsocket();
   }
 
   get login() {
@@ -59,5 +29,28 @@ export default class UI extends EventEmitter {
 
   get msg() {
     return this.msgInput.value;
+  }
+
+  joinChannel(event) {
+    if (event.key === 'Enter') {
+      this.create.style.display = 'none';
+      this.urlInput.style.display = 'none';
+
+      this.emit("joinChannel", {channel: this.url });
+    }
+  }
+
+  sendMessage(event) {
+    if (event.key === 'Enter') {
+      this.emit("sendMessage", {text: this.msg });
+      event.target.value = '';
+    }
+  }
+
+  createChannel(event) {
+    this.create.style.display = 'none';
+    this.urlInput.style.display = 'none';
+
+    this.emit("createChannel", {channel: this.login });
   }
 }

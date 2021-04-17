@@ -22,23 +22,78 @@ describe("UI", () => {
   });
 
   describe("sendMessage", () => {
-    it.only("emits 'sendMessage event'", () => {
+    let spy;
+    beforeEach(() => {
       const evt = document.createEvent("HTMLEvents");
       evt.initEvent("keyup", true, true);
       evt.key = "Enter";
 
-      let spy = jest.fn();
+      spy = jest.fn();
+
       ui.once("sendMessage", spy);
-
+      ui.msgInput.value = "Some text";
       ui.msgInput.dispatchEvent(evt);
+    });
 
-      expect(spy).toHaveBeenCalledWith({"text": ""});
+    it("emits 'sendMessage event'", () => {
+      expect(spy).toHaveBeenCalledWith({"text": "Some text"});
     });
 
     it("empties msg field", () => {
-      ui.sendMessage({key: "Enter", target: { value: "Message" }});
-
       expect(ui.msg).toBe("");
+    });
+  });
+
+  describe("joinChannel", () => {
+    let spy;
+    beforeEach(() => {
+      const evt = document.createEvent("HTMLEvents");
+      evt.initEvent("keyup", true, true);
+      evt.key = "Enter";
+
+      spy = jest.fn();
+
+      ui.once("joinChannel", spy);
+      ui.urlInput.value = "AAAA";
+      ui.urlInput.dispatchEvent(evt);
+    });
+
+    it("emits 'joinChannel event'", () => {
+      expect(spy).toHaveBeenCalledWith({"channel": "AAAA"});
+    });
+
+    it("hides url field", () => {
+      expect(ui.urlInput.style.display).toBe("none");
+    });
+
+    it("hides create button", () => {
+      expect(ui.create.style.display).toBe("none");
+    });
+  });
+
+  describe("createChannel", () => {
+    let spy;
+    beforeEach(() => {
+      const evt = document.createEvent("HTMLEvents");
+      evt.initEvent("click", true, true);
+
+      spy = jest.fn();
+
+      ui.once("createChannel", spy);
+      ui.urlInput.value = "AAAA";
+      ui.create.dispatchEvent(evt);
+    });
+
+    it("emits 'createChannel event'", () => {
+      expect(spy).toHaveBeenCalledWith({"channel": ui.login});
+    });
+
+    it("hides url field", () => {
+      expect(ui.urlInput.style.display).toBe("none");
+    });
+
+    it("hides create button", () => {
+      expect(ui.create.style.display).toBe("none");
     });
   });
 });
