@@ -1,14 +1,16 @@
 import User from "./user.js";
-import Messages from "./messasges.js";
+import Messages from "./messages.js";
+import EventEmitter from "events";
 
-export default class WebSocket {
-  constructor(url=window.WS_URL, login, channel) {
-    this.finalUrl = `${url}/?login=${login}&channel=${channel}`;
-    this._initConnection();
+export default class Websocket extends EventEmitter {
+  constructor(host=window.WS_URL) {
+    super();
+    this._host = host;
+    this._initListeners();
   }
 
-  _initConnection() {
-    this.ws = new WebSocket(finalUrl);
+  _initConnection(host) {
+    this.ws = new WebSocket(host);
 
     this.ws.onopen = this.open;
     this.ws.onclose = this.close;
@@ -16,71 +18,35 @@ export default class WebSocket {
     this.ws.onerror = console.log;
   }
 
-   open(event) {
-      const timestamp = new Date().toISOString();
-      const channel = urlInput.value || "";
-      const text = channel === "" ? "giveChannel" : "updatePeers";
-      const user = new User(loginInput.value);
-      console.log("OPEN> Login: ", loginInput.value, " Channel: ", channel, " Message: ", text);
-      ws.send(JSON.stringify({login: loginInput.value, channel, text}));
-      main.innerHTML = `<p><b><code>${timestamp} - opened channel!</code></b></p>`;
+  _initListeners() {
+    this.on("createChannel", this.create.bind(this));
+    this.on("joinChannel", this.open.bind(this));
+    this.on("sendMessage", this.message.bind(this));
+    this.on("close", this.close.bind(this))
   }
 
-  function message(event) {
-    console.log("MESSAGE: ", event);
-    const msg = JSON.parse(event.data);
-    const {timestamp, text, who} = msg.message;
+  create(login) {
+    this._initConnection(this._host);
 
-    if (text == "giveChannel") {
-      me = who;
-      peers.set(who.connectionId, who);
-      main.innerHTML += `<p><b><code>${timestamp}:${text}- announce channel: ${location.href}?${who.connectionId}</code></b></p>`;
-    }
-
-    if (text === "updatePeers") {
-      peers.set(who.connectionId, who);
-      console.log("New connected: ", who, peers);
-      ws.send(JSON.stringify({login: who, channel: urlInput.value, peers: peers.entries(), text: "updateFromServer"}));
-    }
-    main.innerHTML += `<p><b>${who.login}&gt;</b> <code>${text}</code></p>`;
+    this.emit("ws-open", login);
   }
 
-  close(e) {
-    peers.delete(me.connectionId)
-    main.innerHTML = '<a href=/>Reload</a>';
+   open(login, channel) {
+    this._initConnection(this._host + "/?" + channel);
+    const text = channel === "" ? "giveChannel" : "updatePeers";
+    //console.log("OPEN> Login: ", loginInput.value, " Channel: ", channel, " Message: ", text);
+    this.ws.send(JSON.stringify({login, channel, text}));
+    this.emit("ws-open", login, channel);
   }
+
+  message(login, channel, text) {
+    //console.log("OPEN> Login: ", loginInput.value, " Channel: ", channel, " Message: ", text);
+    this.ws.send(JSON.stringify({login, channel, text}));
+    this.emit("ws-send", login, channel, text);
+  }
+
+  close(event) {
+
+  }
+
 }
-
-
-
-
-
-
-
-
-msg.addEventListener('keyup', function(e) {
-  if (e.key === 'Enter') {
-    const text = e.target.value;
-    e.target.value = '';
-    ws.send(JSON.stringify({text, peers}));
-  }
-})
-
-urlInput.addEventListener('keyup', function(e) {
-  if (e.key === 'Enter') {
-    urlInput.style.display = 'none';
-    create.style.display = 'none';
-    //const [host, channel] = e.target.value.split("?");
-
-    //const url = `${e.target.value}&login=${loginInput.value}&channel=${channel}`;
-    openWebsocket();
-  }
-})
-
-create.addEventListener('click', function(e) {
-  create.style.display = 'none';
-  urlInput.style.display = 'none';
-  console.log("Creating new ws");
-  isMaster = true;
-  openWebsocket();
-})
