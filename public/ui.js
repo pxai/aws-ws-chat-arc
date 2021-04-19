@@ -1,15 +1,16 @@
 import User from "./user.js";
 import Messages from "./messages.js";
-import EventEmitter from "events";
+import EventEmitter from "./events.js";
 
 export default class UI extends EventEmitter {
-  constructor (document) {
+  constructor (document, websocket) {
     super();
     this.main = document.getElementsByTagName('main')[0];
     this.loginInput = document.getElementById('login');
     this.urlInput = document.getElementById('url');
     this.msgInput = document.getElementById('message');
     this.create = document.getElementById('create');
+    this.websocket = websocket;
     this._init();
   }
 
@@ -36,13 +37,13 @@ export default class UI extends EventEmitter {
       this.create.style.display = 'none';
       this.urlInput.style.display = 'none';
 
-      this.emit("joinChannel", {channel: this.url });
+      this.websocket.emit("joinChannel", {channel: this.url });
     }
   }
 
   sendMessage(event) {
     if (event.key === 'Enter') {
-      this.emit("sendMessage", {text: this.msg });
+      this.websocket.emit("sendMessage", {text: this.msg });
       event.target.value = '';
     }
   }
@@ -51,6 +52,6 @@ export default class UI extends EventEmitter {
     this.create.style.display = 'none';
     this.urlInput.style.display = 'none';
 
-    this.emit("createChannel", {channel: this.login });
+    this.websocket.emit("createChannel", {channel: this.login });
   }
 }

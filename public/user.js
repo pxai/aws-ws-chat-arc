@@ -1,5 +1,5 @@
 export default class User {
-  constructor(login,connectionId, master=false) {
+  constructor(login, connectionId, master=false) {
       this.login = login;
       this.connectionId = connectionId;
       this.master = master;
