@@ -37,13 +37,13 @@ export default class UI extends EventEmitter {
       this.create.style.display = 'none';
       this.urlInput.style.display = 'none';
 
-      this.websocket.emit("joinChannel", {channel: this.url });
+      // this.websocket.emit("joinChannel", {channel: this.url });
     }
   }
 
   sendMessage(event) {
     if (event.key === 'Enter') {
-      this.websocket.emit("sendMessage", {text: this.msg });
+      // this.websocket.emit("sendMessage", {text: this.msg });
       event.target.value = '';
     }
   }
@@ -51,7 +51,6 @@ export default class UI extends EventEmitter {
   createChannel(event) {
     this.create.style.display = 'none';
     this.urlInput.style.display = 'none';
-
-    this.websocket.emit("createChannel", {channel: this.login });
+    this.websocket.create(this.login);
   }
 }
