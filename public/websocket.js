@@ -14,7 +14,7 @@ export default class Websocket extends EventEmitter {
 
     this.ws.onopen = this.open.bind(this);
     this.ws.onclose = this.close.bind(this);
-    this.ws.onmessage = this.message.bind(this);
+    this.ws.onmessage = this.onMessage.bind(this);
     this.ws.onerror = console.log;
   }
 
@@ -33,8 +33,12 @@ export default class Websocket extends EventEmitter {
     // this.emit("ws-open", login, channel);
   }
 
-  message(login, channel, text) {
-    // this.emit("ws-send", login, channel, text);
+  onMessage(event) {
+    console.log("WS > message received: ", event);
+  }
+
+  sendMessage(login, channel, text) {
+    this.ws.send(JSON.stringify({login, channel, text}));
   }
 
   close(login) {

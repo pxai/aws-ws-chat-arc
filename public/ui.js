@@ -43,7 +43,7 @@ export default class UI extends EventEmitter {
 
   sendMessage(event) {
     if (event.key === 'Enter') {
-      // this.websocket.emit("sendMessage", {text: this.msg });
+      this.websocket.sendMessage(login,null, this.msg);
       event.target.value = '';
     }
   }
