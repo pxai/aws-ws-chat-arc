@@ -36,7 +36,23 @@ export default class Websocket extends EventEmitter {
   onMessage(event) {
     console.log("WS > message received: ", event, event.data);
     const msg = JSON.parse(event.data);
-    this.emit("ws-msg", {login: "sample", channel: "CHAN", text: msg})
+    const {timestamp, text, who} = msg.message;
+    let formattedMsg = "";
+
+    if (text == "giveChannel") {
+      this.me = who;
+      this.peers.set(who.connectionId, who);
+      formattedMsg = `<p><b><code>${timestamp}:${text}- announce channel: ${location.href}?${who.connectionId}</code></b></p>`;
+    }
+
+    if (text === "updatePeers") {
+      this.peers.set(who.connectionId, who);
+      console.log("New connected: ", who, this.peers);
+      ws.send(JSON.stringify({login: who, channel: urlInput.value, peers: this.peers.entries(), text: "updateFromServer"}));
+    }
+    formattedMsg += `<p><b>${who.login}&gt;</b> <code>${text}</code></p>`;
+    this.emit("ws-msg", {login: "sample", channel: "CHAN", text: formattedMsg})
+
   }
 
   sendMessage(login, channel, text) {
