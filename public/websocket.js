@@ -49,7 +49,7 @@ export default class Websocket extends EventEmitter {
     if (text === "updatePeers") {
       this.peers.set(who.connectionId, who);
       console.log("New connected: ", who, this.peers);
-      ws.send(JSON.stringify({login: who, channel: urlInput.value, peers: this.peers.entries(), text: "updateFromServer"}));
+      // this.ws.send(JSON.stringify({login: who, channel: this._host, peers: this.peers.entries(), text: "updateFromServer"}));
     }
     formattedMsg += `<p><b>${who.login}&gt;</b> <code>${text}</code></p>`;
     this.emit("ws-msg", {login: "sample", channel: "CHAN", text: formattedMsg})
