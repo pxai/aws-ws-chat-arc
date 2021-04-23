@@ -7,6 +7,7 @@ export default class Websocket extends EventEmitter {
     super();
     this._host = host;
     this.channel = null;
+    this.peers = new Set();
   }
 
   _initConnection(host) {
