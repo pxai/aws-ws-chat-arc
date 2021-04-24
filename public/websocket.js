@@ -27,17 +27,17 @@ export default class Websocket extends EventEmitter {
   }
 
    open(login, channel) {
-     console.log("WS> Open!!! ", this._host, login, channel);
     //this._initConnection(this._host + "/?" + channel);
     const text = channel === "" ? "giveChannel" : "updatePeers";
+    console.log("WS> Open!!! ", this._host, login, channel, text);
     this.ws.send(JSON.stringify({login, channel, text}));
     // this.emit("ws-open", login, channel);
   }
 
   onMessage(event) {
-    console.log("WS > message received: ", event, event.data);
     const msg = JSON.parse(event.data);
     const {timestamp, text, who} = msg.message;
+    console.log("WS > message received: ", who, text);
     let formattedMsg = "";
 
     if (text == "giveChannel") {
@@ -48,8 +48,8 @@ export default class Websocket extends EventEmitter {
 
     if (text === "updatePeers") {
       this.peers.set(who.connectionId, who);
-      console.log("New connected: ", who, this.peers);
-      // this.ws.send(JSON.stringify({login: who, channel: this._host, peers: this.peers.entries(), text: "updateFromServer"}));
+      console.log("WS> New connected: ", who, this.peers);
+      this.ws.send(JSON.stringify({login: who, channel: this._host, peers: this.peers.entries(), text: "updateFromServer"}));
     }
     formattedMsg += `<p><b>${who.login}&gt;</b> <code>${text}</code></p>`;
     this.emit("ws-msg", {login: "sample", channel: "CHAN", text: formattedMsg})

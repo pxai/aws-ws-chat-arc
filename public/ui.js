@@ -57,5 +57,6 @@ export default class UI extends EventEmitter {
 
   showMessage({login, channel, text}) {
     console.log("Message received: ", login, channel, text);
+    this.main.innerHTML += text;
   }
 }
