@@ -26,10 +26,11 @@ export default class Websocket extends EventEmitter {
     // this.emit("ws-open", login);
   }
 
-   open(login, channel) {
+   open(login, channel = "") {
     //this._initConnection(this._host + "/?" + channel);
     const text = channel === "" ? "giveChannel" : "updatePeers";
     console.log("WS> Open!!! ", this._host, login, channel, text);
+    this.channel = channel;
     this.ws.send(JSON.stringify({login, channel, text}));
     // this.emit("ws-open", login, channel);
   }
@@ -40,20 +41,23 @@ export default class Websocket extends EventEmitter {
     console.log("WS > message received: ", who, text);
     let formattedMsg = "";
 
-    if (text == "giveChannel") {
+    if (text === "giveChannel") {
       this.me = who;
+      this.channel = who.connectionId;
       this.peers.set(who.connectionId, who);
-      formattedMsg = `<p><b><code>${timestamp}:${text}- announce channel: ${location.href}?${who.connectionId}</code></b></p>`;
-    }
-
-    if (text === "updatePeers") {
+      console.log("WS> Give Channel ", who, this.peers);
+      formattedMsg = `<p><b><code>${timestamp}:${text}- announce channel: ${this.channel}</code></b></p>`;
+      this.emit("ws-msg", {login: who.login, channel: this.channel, text: formattedMsg})
+    } else if (text === "updatePeers") {
       this.peers.set(who.connectionId, who);
-      console.log("WS> New connected: ", who, this.peers);
-      this.ws.send(JSON.stringify({login: who, channel: this._host, peers: this.peers.entries(), text: "updateFromServer"}));
+      console.log("WS> Update peers ", who, this.peers);
+      this.ws.send(JSON.stringify({login: who, channel: this.channel, peers: this.peers.entries(), text: "updateFromServer"}));
+      formattedMsg = `<p><b>${who.login}&gt;</b> <code>${text}</code></p>`;
+      this.emit("ws-msg", {login: "sample", channel: this.channel, text: formattedMsg})
+    } else {
+      formattedMsg = `<p><b>${who.login}&gt;</b> <code>${text}</code></p>`;
+      this.emit("ws-msg", {login: who.login, channel: this.channel, text: formattedMsg })
     }
-    formattedMsg += `<p><b>${who.login}&gt;</b> <code>${text}</code></p>`;
-    this.emit("ws-msg", {login: "sample", channel: "CHAN", text: formattedMsg})
-
   }
 
   sendMessage(login, channel, text) {
