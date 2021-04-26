@@ -55,8 +55,8 @@ export default class UI extends EventEmitter {
     this.websocket.create(this.login);
   }
 
-  showMessage({login, channel, text}) {
-    console.log("Message received: ", login, channel, " YA: ",text);
-    this.main.innerHTML += text;
+  showMessage({who, channel, text}) {
+    console.log("Message received: ", who, channel, " YA: ",text);
+    this.main.innerHTML += `<p><b>${who.login} (${channel})&gt;</b> ${text}</p>`;
   }
 }
