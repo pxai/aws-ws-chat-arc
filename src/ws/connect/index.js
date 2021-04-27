@@ -12,10 +12,6 @@ exports.handler = async function ws(event) {
   const timestamp = new Date().toISOString();
   const message = { timestamp, text: "connect", who: { connectionId, login } };
   const channel = event?.queryStringParameters?.channel || connectionId;
-  await arc.ws.send({
-    id: channel,
-    payload: {message}
-  });
 
-  return {statusCode: 200, connectionId, msg: "YEAH"};
+  return {statusCode: 200, connectionId, msg: "connected"};
 }

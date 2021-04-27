@@ -7,7 +7,7 @@ exports.handler = async function ws(event) {
   const timestamp = new Date().toISOString();
   const connectionId = event.requestContext.connectionId;
   const {channel, text, who, peers} = JSON.parse(event.body);
-  who.connectionId = connectionId;
+  who.connectionId = !who.connectionId ? connectionId : who.connectionId;
   const message = { timestamp, text, who };
 
   if (text === "updatePeers") {
