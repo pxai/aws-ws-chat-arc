@@ -38,7 +38,7 @@ export default class UI extends EventEmitter {
       this.create.style.display = 'none';
       this.urlInput.style.display = 'none';
 
-      // this.websocket.emit("joinChannel", {channel: this.url });
+      this.websocket.join(this.login, this.url);
     }
   }
 
