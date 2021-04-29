@@ -27,17 +27,17 @@ export default class Websocket extends EventEmitter {
 
   join(login, channel) {
     this.me = { login };
+    this.channel = channel;
     this._host = `${this._host}/?login=${login}&channel=${channel}`;
     console.log("WS> Lets join: ", login, channel, this._host);
     this._initConnection(this._host);
   }
 
-   open(who, channel = "") {
-    //this._initConnection(this._host + "/?" + channel);
-    const text = channel === "" ? "giveChannel" : "updatePeers";
-    console.log("WS> Open!!! ", this._host, who, channel, text);
-    this.channel = channel;
-    this.ws.send(JSON.stringify({who, channel, text}));
+   open(who) {
+    const text = !this.channel ? "giveChannel" : "updatePeers";
+    console.log("WS> Open!!! ", this._host, who, this.channel, text);
+
+    this.ws.send(JSON.stringify({who, channel: this.channel, text}));
   }
 
   onMessage(event) {

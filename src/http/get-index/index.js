@@ -16,12 +16,13 @@ exports.handler = async function http(req) {
 <main>Loading...</main>
 <input id=login type=text placeholder="Login" value="master" autofocus><br />
 <input id=create type=button value="Create game"><br />
-<input id=url type=text value="http://localhost:3333/?" placeholder="Enter given code and press enter"><br />
+<input id=url type=text placeholder="Enter given code and press enter"><br />
 <input id=message type=text placeholder="Enter message"><br />
 <script>
 window.WS_URL = '${getURL()}'
 </script>
 <script type=module src=${static("/index.js")}></script>
+<div><a href='http://localhost:3333' target="_blank">Open another</a></div>
 </body>
 </html>`,
   };
