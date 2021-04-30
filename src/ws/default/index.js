@@ -8,10 +8,11 @@ exports.handler = async function ws(event) {
   const connectionId = event.requestContext.connectionId;
   const {channel, text, who, peers} = JSON.parse(event.body);
   who.connectionId = !who.connectionId ? connectionId : who.connectionId;
+  who.login = event?.queryStringParameters?.login || who.login;
   const message = { timestamp, text, who };
 
-  if (text === "updatePeers") {
-    console.log("REQUESTING PEERS!!", channel, text, who.login);
+  if (text === "askForPeers") {
+    console.log("REQUESTING PEERS!!", channel, text, who, peers);
     await arc.ws.send({
       id: channel,
       payload: {message}

@@ -1,4 +1,4 @@
 export default {
   GIVE_CHANNEL: "giveChannel",
-  UPDATE_PEERS: "updatePeers"
+  UPDATE_PEERS: "askForPeers"
 };

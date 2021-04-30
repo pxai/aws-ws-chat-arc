@@ -57,6 +57,6 @@ export default class UI extends EventEmitter {
 
   showMessage({who, channel, text}) {
     console.log("Message received: ", who, channel, " YA: ",text);
-    this.main.innerHTML += `<p><b>${who.login} (${channel})&gt;</b> ${text}</p>`;
+    this.main.innerHTML += `<p><b>${who.login} (${who.connectionId})&gt;</b> ${text}</p>`;
   }
 }

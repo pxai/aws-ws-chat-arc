@@ -34,7 +34,7 @@ export default class Websocket extends EventEmitter {
   }
 
    open(who) {
-    const text = !this.channel ? "giveChannel" : "updatePeers";
+    const text = !this.channel ? "giveChannel" : "askForPeers";
     console.log("WS> Open!!! ", this._host, who, this.channel, text);
 
     this.ws.send(JSON.stringify({who, channel: this.channel, text}));
@@ -49,16 +49,18 @@ export default class Websocket extends EventEmitter {
     if (text === "giveChannel") {
       this.me = { ...this.me, connectionId: who.connectionId };
       this.channel = who.connectionId;
-      this.peers.set(who.connectionId, who);
+      this.peers.set(who.connectionId, this.me);
       console.log("WS> Give Channel ", this.me, who, this.peers);
       formattedMsg = `<code>${timestamp}:${text}- announce channel: ${this.channel}</code>`;
       this.emit("ws-msg", {who: this.me, channel: this.channel, text: formattedMsg})
-    } else if (text === "updatePeers") {
+    } else if (text === "askForPeers") {
       this.peers.set(who.connectionId, who);
-      console.log("WS> Update peers ", who, this.peers);
-      this.ws.send(JSON.stringify({who, channel: this.channel, peers: this.peers.entries(), text: "updateFromServer"}));
+      console.log("WS>", who, " is asking for peers ", this.peers);
+      this.ws.send(JSON.stringify({who, channel: this.channel, peers: Array.from(this.peers.values()), text: "updateFromServer"}));
       formattedMsg = `<code>${text}</code>`;
       this.emit("ws-msg", {who: this.me, channel: this.channel, text: formattedMsg})
+    } else if (text === "updateFromServer") {
+      console.log("WS>", who, " server is updating!!", text);
     } else {
       formattedMsg = `<code>${text}</code>`;
       this.emit("ws-msg", {who, channel: this.channel, text: formattedMsg })

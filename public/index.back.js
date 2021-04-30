@@ -28,7 +28,7 @@ function openWebsocket (url=defaultUrl) {
 function open(event) {
   const timestamp = new Date().toISOString();
   const channel = urlInput.value || "";
-  const text = channel === "" ? "giveChannel" : "updatePeers";
+  const text = channel === "" ? "giveChannel" : "askForPeers";
   const user = new User(loginInput.value);
   console.log("OPEN> Login: ", loginInput.value, " Channel: ", channel, " Message: ", text);
   ws.send(JSON.stringify({login: loginInput.value, channel, text}));
@@ -51,7 +51,7 @@ function message(event) {
     main.innerHTML += `<p><b><code>${timestamp}:${text}- announce channel: ${location.href}?${who.connectionId}</code></b></p>`;
   }
 
-  if (text === "updatePeers") {
+  if (text === "askForPeers") {
     peers.set(who.connectionId, who);
     console.log("New connected: ", who, peers);
     ws.send(JSON.stringify({login: who, channel: urlInput.value, peers: peers.entries(), text: "updateFromServer"}));
