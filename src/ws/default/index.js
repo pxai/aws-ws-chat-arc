@@ -9,6 +9,7 @@ exports.handler = async function ws(event) {
   const {channel, text, who, peers} = JSON.parse(event.body);
   who.connectionId = !who.connectionId ? connectionId : who.connectionId;
   who.login = event?.queryStringParameters?.login || who.login;
+  const to = !peers ? [{...who}] : peers;
   const message = { timestamp, text, who };
 
   if (text === "askForPeers") {
@@ -23,9 +24,12 @@ exports.handler = async function ws(event) {
     console.log("Server sends update", channel, text, who.login, peers);
   }
 
-  await arc.ws.send({
-    id: connectionId,
-    payload: {message}
+  to.forEach(async peer => {
+    console.log("Server sends update to: ", peer.connectionId);
+    await arc.ws.send({
+      id: peer.connectionId,
+      payload: {message}
+    });
   });
   console.log("Server, sent> ", message, event.body);
 
