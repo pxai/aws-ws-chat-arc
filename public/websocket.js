@@ -68,7 +68,7 @@ export default class Websocket extends EventEmitter {
   }
 
   sendMessage(login, channel, text) {
-    this.ws.send(JSON.stringify({who: this.me, channel, text}));
+    this.ws.send(JSON.stringify({who: this.me, channel, text, peers: Array.from(this.peers.values())}));
   }
 
   close(login) {
